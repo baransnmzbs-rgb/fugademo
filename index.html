@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fugadoor Ahşap Kapı Ürün Görüntüleyici</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Genel Stil ve Font Uygulaması */
+        body {
+            font-family: 'Montserrat', sans-serif; /* Yeni, Modern Font */
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Ana Konteyner */
+        .product-viewer-container {
+            display: flex;
+            max-width: 1200px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* Görsel Alanı */
+        .product-image-area {
+            flex: 2;
+            padding: 30px;
+            background-color: #e9ecef;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .kapı-görseli {
+            width: 100%;
+            max-width: 400px; 
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.3s ease-in-out; 
+        }
+
+        /* GİZLENEN ÖZET YAZISI (WhatsApp mesajı için saklandı) */
+        #selected-options-summary {
+            visibility: hidden; 
+            height: 0;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        /* Seçenekler Alanı */
+        .product-options-area {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .product-options-area h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #FF7F50; /* Turuncu */
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+
+        .option-group {
+            margin-bottom: 25px;
+        }
+
+        .option-group h3 {
+            font-size: 1.1em;
+            color: #34495e;
+            margin-bottom: 10px;
+        }
+
+        /* Renk Seçenekleri (Swatches) */
+        .color-swatches {
+            display: flex;
+            gap: 10px;
+        }
+
+        .color-swatch {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .color-swatch.active {
+            border-color: #FF7F50; /* Turuncu */
+            transform: scale(1.1);
+        }
+
+        /* Düğme Seçenekleri */
+        .button-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .option-button {
+            background-color: #ecf0f1;
+            color: #34495e;
+            border: 1px solid #bdc3c7;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .option-button:hover {
+            background-color: #dfe6e9;
+        }
+
+        .option-button.active {
+            background-color: #FF7F50; /* Turuncu */
+            color: #fff;
+            border-color: #E9693D; /* Koyu Turuncu */
+            box-shadow: 0 2px 5px rgba(255, 127, 80, 0.4);
+        }
+
+        /* Talep Butonu */
+        .talep-olustur-button {
+            width: 100%;
+            padding: 15px;
+            background-color: #FF4500; /* Kırmızı Turuncu */
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.2s;
+        }
+
+        .talep-olustur-button:hover {
+            background-color: #CC3700; /* Koyu Turuncu Hover */
+        }
+
+        /* Responsive Düzenleme */
+        @media (max-width: 900px) {
+            .product-viewer-container {
+                flex-direction: column;
+            }
+            .product-image-area {
+                order: -1; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="product-viewer-container">
+        
+        <div class="product-image-area">
+            <img id="product-image" src="images/default-kapi-beyaz.jpg" alt="Seçilen Ahşap Kapı" class="kapı-görseli">
+            <p id="selected-options-summary">Seçilen Ürün: Beyaz - Standart Ölçü - Düz Panel - Camsız</p>
+        </div>
+
+        <div class="product-options-area">
+            
+            <h2>🚪 Kapı Özellikleri ve Seçenekleri</h2>
+
+            <div class="option-group color-options">
+                <h3>1. Renk Seçimi</h3>
+                <div class="color-swatches">
+                    <button class="color-swatch active" data-color="beyaz" style="background-color: #f0f0f0;" title="Beyaz"></button>
+                    <button class="color-swatch" data-color="ceviz" style="background-color: #654321;" title="Ceviz"></button>
+                    <button class="color-swatch" data-color="antrasit" style="background-color: #36454F;" title="Antrasit"></button>
+                    </div>
+            </div>
+
+            <div class="option-group">
+                <h3>2. Ölçü</h3>
+                <div class="button-options" data-option-type="olcu">
+                    <button class="option-button active" data-value="standart">Standart</button>
+                    <button class="option-button" data-value="ozel">Özel Üretim</button>
+                </div>
+            </div>
+
+            <div class="option-group">
+                <h3>3. Kapı Tipi</h3>
+                <div class="button-options" data-option-type="tip">
+                    <button class="option-button active" data-value="duz">Düz Panel</button>
+                    <button class="option-button" data-value="cizgili">Çizgili Model</button>
+                    <button class="option-button" data-value="freze">Freze İşlemeli</button>
+                </div>
+            </div>
+
+            <div class="option-group">
+                <h3>4. Cam Kullanımı</h3>
+                <div class="button-options" data-option-type="cam">
+                    <button class="option-button active" data-value="camsiz">Camsız</button>
+                    <button class="option-button" data-value="yarim-cam">Yarım Camlı</button>
+                    <button class="option-button" data-value="tam-cam">Tam Camlı</button>
+                </div>
+            </div>
+
+            <button class="talep-olustur-button">Teklif ve Talep Formu Oluştur</button>
+
+        </div>
+    </div>
+
+   <script>
+        // Seçeneklerin başlangıç değerleri
+        let selectedOptions = {
+            color: 'beyaz',
+            olcu: 'standart',
+            tip: 'duz',
+            cam: 'camsiz'
+        };
+
+        // Görsel Linkleri Haritası (Kendi Linklerinizi Buraya Ekleyeceksiniz!)
+        // Anahtar Formatı: 'renk-tip-cam'
+        // Değer Formatı: 'https://fugadoor-cdn.com/gorsel/beyaz-duz-camsiz.jpg'
+        const imageLinks = {
+            // Beyaz Renk Kombinasyonları
+            'beyaz-duz-camsiz': 'https://i.ibb.co/h1yGKP96/unnamed-1.png', // ÖRNEK LİNK
+            'beyaz-duz-yarim-cam': 'https://i.ibb.co/h1yGKP96/unnamed-1.png', // ÖRNEK LİNK
+            'beyaz-duz-tam-cam': 'https://i.ibb.co/h1yGKP96/unnamed-1.png', // ÖRNEK LİNK
+            'beyaz-cizgili-camsiz': 'https://i.ibb.co/h1yGKP96/unnamed-1.png', // ÖRNEK LİNK
+            // ... Beyazın diğer 6 kombinasyonu (freze ve cam seçenekleri)
+            
+            // Ceviz Renk Kombinasyonları
+            'ceviz-duz-camsiz': 'https://i.ibb.co/5XbNBcFs/Gemini-Generated-mage-nybpp7nybpp7nybp.png', // ÖRNEK LİNK
+            'ceviz-cizgili-camsiz': 'https://i.ibb.co/h1yGKP96/unnamed-1.png.jpg', // ÖRNEK LİNK
+            // ... Cevizin diğer 7 kombinasyonu
+            
+            // Antrasit Renk Kombinasyonları
+            'antrasit-duz-camsiz': 'https://i.ibb.co/0pG5jvDN/Gemini-Generated-mage-r3b8o5r3b8o5r3b8.png', // ÖRNEK LİNK
+            // ... Antrasitin diğer 8 kombinasyonu
+            
+            // Lütfen bu haritadaki tüm 27 (veya kaç kombinasyon varsa) görsel linkini doldurun!
+        };
+        // Varsayılan bir resim bulunamazsa gösterilecek link
+        const defaultErrorImage = 'https://siteniz.com/gorseller/hata-gorseli.jpg'; 
+        
+        // DOM Elementleri
+        const productImage = document.getElementById('product-image');
+        const summaryElement = document.getElementById('selected-options-summary');
+
+        // Seçili özelliklere göre görsel linkini çeken fonksiyon
+        function getImagePath() {
+            // Anahtar: 'beyaz-duz-camsiz' gibi bir metin oluşturulur
+            const key = `${selectedOptions.color}-${selectedOptions.tip}-${selectedOptions.cam}`;
+            
+            // Haritadan linki bul ve geri döndür. Eğer bulamazsa hata görselini döndür.
+            return imageLinks[key] || defaultErrorImage;
+        }
+
+        // Özet metni güncelleme fonksiyonu (WhatsApp için kullanılır)
+        function updateSummary() {
+            const colorName = selectedOptions.color.charAt(0).toUpperCase() + selectedOptions.color.slice(1);
+            const olcuText = selectedOptions.olcu === 'standart' ? 'Standart Ölçü' : 'Özel Üretim Ölçü';
+            const tipText = selectedOptions.tip === 'duz' ? 'Düz Panel' : (selectedOptions.tip === 'cizgili' ? 'Çizgili Model' : 'Freze İşlemeli');
+            const camText = selectedOptions.cam === 'camsiz' ? 'Camsız' : (selectedOptions.cam === 'yarim-cam' ? 'Yarım Camlı' : 'Tam Camlı');
+
+            summaryElement.textContent = `${colorName} - ${olcuText} - ${tipText} - ${camText}`;
+        }
+
+        // Görseli ve Özeti güncelleyen ana fonksiyon
+        function updateProductViewer() {
+            const newImagePath = getImagePath();
+            
+            productImage.style.opacity = 0;
+            
+            setTimeout(() => {
+                productImage.src = newImagePath;
+                // Görsel bulunamazsa (404), hata görselini göster
+                productImage.onerror = function() {
+                    this.src = defaultErrorImage; 
+                };
+                productImage.style.opacity = 1; 
+            }, 150); 
+
+            updateSummary();
+        }
+
+        // ----------------------------------------------------
+        // WHATSAPP İŞLEVİ VE SEÇENEK DİNLEYİCİLERİ (Aynı Kalır)
+        // ----------------------------------------------------
+
+        // WhatsApp mesajı oluşturan fonksiyon
+        function generateWhatsAppLink() {
+            const summaryText = summaryElement.textContent;
+            const message = `Merhaba Fugadoor, web sitenizden bu kapıyı inceledim ve teklif almak istiyorum. Seçimlerim: ${summaryText}`;
+            const encodedMessage = encodeURIComponent(message);
+            
+            // LÜTFEN BURAYA KENDİ WHATSAPP NUMARANIZI EKLEYİN!
+            const whatsappNumber = "905320551706"; 
+            
+            return `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+        }
+
+        const talepButton = document.querySelector('.talep-olustur-button');
+        talepButton.addEventListener('click', function() {
+            const whatsappURL = generateWhatsAppLink();
+            window.open(whatsappURL, '_blank');
+        });
+        
+        // Renk Seçenekleri için Olay Dinleyicisi
+        document.querySelectorAll('.color-swatch').forEach(swatch => {
+            swatch.addEventListener('click', function() {
+                document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+                this.classList.add('active');
+                
+                selectedOptions.color = this.getAttribute('data-color');
+                updateProductViewer();
+            });
+        });
+
+        // Diğer Buton Seçenekleri için Olay Dinleyicisi (Ölçü, Tip, Cam)
+        document.querySelectorAll('.option-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const optionType = this.closest('.button-options').getAttribute('data-option-type');
+                
+                this.closest('.button-options').querySelectorAll('.option-button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                selectedOptions[optionType] = this.getAttribute('data-value');
+                updateProductViewer();
+            });
+        });
+
+        // Sayfa yüklendiğinde başlangıç durumunu ayarla
+        document.addEventListener('DOMContentLoaded', updateProductViewer);
+    </script>
